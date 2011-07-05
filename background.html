@@ -1,4 +1,35 @@
 <script type="text/javascript">
+
+    var NAMES_URL = "http://adam.hughes.cc/shacknames.json";
+
+    // one hour
+    var CACHE_TIME = 60 * 60 * 1000;
+
+    function getNames(callback)
+    {
+        // this could probably be improved more by using if-modified-since header when calling getUrl
+        var names = localStorage["names"];
+        var last_updated = localStorage["last_update"];
+        var now = (new Date()).getTime();
+        if (!names || !last_updated || ((now - last_updated) > CACHE_TIME))
+        {
+            // not in cache, re-fetch
+            getUrl(NAMES_URL, function (response)
+            {
+                names = JSON.parse(response.responseText);
+                last_updated = now;
+                localStorage["names"] = JSON.stringify(names);
+                localStorage["last_update"] = last_updated;
+                callback(names);
+            });
+        }
+        else
+        {
+            // use cached
+            callback(names);
+        }
+    }
+
     function getUrl(url, callback)
     {
         var xhr = new XMLHttpRequest();
@@ -15,6 +46,8 @@
 
     chrome.extension.onRequest.addListener(function(request, sender, sendResponse)
     {
+        if (request.name == "getNames")
+            getNames(sendResponse);
         if (request.name == "getUrl")
             getUrl(request.url, sendResponse);
         else

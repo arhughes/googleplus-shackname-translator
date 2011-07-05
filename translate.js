@@ -1,6 +1,6 @@
-function getUrl(url, callback)
+function getNames(callback)
 {
-    chrome.extension.sendRequest({"name": "getUrl", "url": url}, function(response)
+    chrome.extension.sendRequest({"name": "getNames"}, function(response)
     {
         callback(response);
     });
@@ -31,9 +31,10 @@ function mapNames(map, source)
     }
 }
 
-getUrl('http://adam.hughes.cc/shacknames.json', function (response) {
+getNames(function (response)
+{
+    var map = JSON.parse(response);
 
-    var map = JSON.parse(response.responseText);
 
     // map all the links alread in the document
     mapNames(map, document);
