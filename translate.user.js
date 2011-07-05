@@ -7,7 +7,7 @@
 var NAMES_URL = "http://adam.hughes.cc/shacknames.json";
 var CACHE_TIME = 60 * 60 * 1000;
 
-var oid_regex = /^https:\/\/plus\.google\.com\/(u\/\d\/)?(\d+)$/i
+var oid_regex = /^https?:\/\/(plus|profiles)\.google\.com\/(u\/\d\/)?(\d+)$/i
 
 function mapNames(map, source)
 {
@@ -21,7 +21,7 @@ function mapNames(map, source)
 
         if (match != null)
         {
-            var oid = match[2];
+            var oid = match[3];
 
             // match the oid number with our mapping
             var name = map[oid];

@@ -14,7 +14,7 @@ function getName(oid, link, callback)
     });
 }
 
-var oid_regex = /^https:\/\/plus\.google\.com\/(u\/\d\/)?(\d+)$/i
+var oid_regex = /^https?:\/\/(plus|profiles)\.google\.com\/(u\/\d\/)?(\d+)$/i
 
 function mapNames(map, source)
 {
@@ -29,7 +29,7 @@ function mapNames(map, source)
         // don't put names after images
         if (match != null && links[i].firstChild.tagName != "IMG")
         {
-            var oid = match[2];
+            var oid = match[3];
 
             // match the oid number with our mapping
             var name = map[oid];
