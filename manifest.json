@@ -1,0 +1,17 @@
+{
+    "name": "Google+ Shackname Translator",
+    "version": "0.1",
+    "description": "Puts Shacknews names into your Google+ stream",
+    "background_page": "background.html",
+    "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDcdxBXf+X/vJvXaufEEQX9SFqqnHOWA/DDjkX6rqw6CVy/Grk3eg8WGEOEQGLZ3/97fXIPLKZPUJNULxLKU3N7PdZl8yGqLPKuuCSWSt0/x8zJ+2r6v6uGhJ+7fU2bOJ7MWu5vMk5Q3wz4ADOBy5Ssd2c67CvztdbXZBieXy0cXwIDAQAB",
+    "content_scripts": [
+    {
+        "js": [ "translate.js" ],
+        "all_frames": true,
+        "matches": [ "https://plus.google.com/*" ]
+    }],
+    "permissions": [
+        "http://adam.hughes.cc/*"
+    ]
+}
+
