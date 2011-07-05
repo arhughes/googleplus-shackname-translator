@@ -5,6 +5,56 @@
     // one hour
     var CACHE_TIME = 60 * 60 * 1000;
 
+    function getName(oid, callback)
+    {
+        var names = JSON.parse(localStorage["names"]);
+        var name = names[oid];
+        if (name == null)
+        {
+            getUrl('https://plus.google.com/' + oid + '/about', function(response)
+            {
+                var name_regex = new RegExp("Other names<\/h2><div class=\".*?\">(.*?)<\/div>", "i");
+                var matches = name_regex.exec(response.responseText);
+                if (matches != null)
+                {
+                    var other_names = matches[1];
+                    console.log('Found other names for ' + oid + ': ' + other_names);
+
+                    // ignore some default entries
+                    if (other_names.indexOf('For example: maiden name') != -1)
+                          other_names = '';
+
+                    // cache this name so we don't have to retrieve it again
+                    addToCache(oid, other_names);
+
+                    callback(other_names);
+                }
+                else
+                {
+                    console.log('no other names found, caching empty');
+                    // cache this name so we don't have to retrieve it again
+                    addToCache(oid, '');
+                    names[oid] = '';
+
+                    callback('');
+                }
+
+            });
+        }
+        else
+        {
+            callback(name);
+        }
+
+    }
+
+    function addToCache(oid, other_names)
+    {
+        var names = JSON.parse(localStorage['names']);
+        names[oid] = other_names;
+        localStorage['names'] = JSON.stringify(names);
+    }
+
     function getNames(callback)
     {
         // this could probably be improved more by using if-modified-since header when calling getUrl
@@ -48,8 +98,8 @@
     {
         if (request.name == "getNames")
             getNames(sendResponse);
-        if (request.name == "getUrl")
-            getUrl(request.url, sendResponse);
+        else if (request.name == "getName")
+            getName(request.oid, sendResponse);
         else
             sendResponse();
     });

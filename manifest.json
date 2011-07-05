@@ -11,7 +11,8 @@
         "matches": [ "https://plus.google.com/*" ]
     }],
     "permissions": [
-        "http://adam.hughes.cc/*"
+        "http://adam.hughes.cc/*",
+        "https://plus.google.com/*"
     ]
 }
 

@@ -6,6 +6,14 @@ function getNames(callback)
     });
 }
 
+function getName(oid, link, callback)
+{
+    chrome.extension.sendRequest({"name": "getName", "oid": oid}, function(response)
+    {
+        callback(link, response);
+    });
+}
+
 function mapNames(map, source)
 {
     var links = source.getElementsByTagName("a");
@@ -15,17 +23,23 @@ function mapNames(map, source)
     {
         var oid = links[i].getAttribute("oid");
 
-        if (oid)
+        // don't put names after images
+        if (oid && links[i].firstChild.tagName != "IMG")
         {
             // match the oid number with our mapping
             var name = map[oid];
-            if (name)
+            if (name != null)
             {
-                // don't put names after images
-                if (links[i].firstChild.tagName != "IMG")
+                links[i].innerHTML += " (" + name + ")";
+            }
+            else
+            {
+                getName(oid, links[i], function(link, name)
                 {
-                    links[i].innerHTML += " (" + name + ")";
-                }
+                    console.log("got here! from " + name);
+                    if (name)
+                        link.innerHTML += " (" + name + ")";
+                });
             }
         }
     }
