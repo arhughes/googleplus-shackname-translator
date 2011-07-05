@@ -35,14 +35,14 @@ function mapNames(map, source)
             var name = map[oid];
             if (name != null)
             {
-                links[i].innerHTML += " (" + name + ")";
+                if (name != '')
+                    links[i].innerHTML += " (" + name + ")";
             }
             else
             {
                 getName(oid, links[i], function(link, name)
                 {
-                    console.log("got here! from " + name);
-                    if (name)
+                    if (name && name != '')
                         link.innerHTML += " (" + name + ")";
                 });
             }
