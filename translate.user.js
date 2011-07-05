@@ -7,6 +7,8 @@
 var NAMES_URL = "http://adam.hughes.cc/shacknames.json";
 var CACHE_TIME = 60 * 60 * 1000;
 
+var oid_regex = /^https:\/\/plus\.google\.com\/(\d+)$/i
+
 function mapNames(map, source)
 {
     var links = source.getElementsByTagName("a");
@@ -14,10 +16,13 @@ function mapNames(map, source)
     // look for all the links with an 'oid' attribute
     for (var i = 0; i < links.length; i++)
     {
-        var oid = links[i].getAttribute("oid");
+        // use a regex instead of the oid attribute to try to catch more items
+        var match = oid_regex.exec(links[i].href);
 
-        if (oid)
+        if (match != null)
         {
+            var oid = match[1];
+
             // match the oid number with our mapping
             var name = map[oid];
             if (name)
