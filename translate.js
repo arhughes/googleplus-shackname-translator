@@ -16,7 +16,9 @@ function getName(oid, link, callback)
 
 var oid_regex = /^https?:\/\/(plus|profiles)\.google\.com\/(u\/\d\/)?(\d+)$/i
 
-function mapNames(map, source)
+var shack_icon = chrome.extension.getURL("shack.png");
+
+function mapNames(map, ids, source)
 {
     var links = source.getElementsByTagName("a");
 
@@ -30,6 +32,11 @@ function mapNames(map, source)
         if (match != null && links[i].firstChild.tagName != "IMG")
         {
             var oid = match[3];
+
+            if (ids.indexOf("\"" + oid + "\"") >= 0)
+            {
+                links[i].innerHTML += "<img style='vertical-align: bottom' src='" + shack_icon + "'/>";
+            }
 
             // match the oid number with our mapping
             var name = map[oid];
@@ -52,16 +59,16 @@ function mapNames(map, source)
 
 getNames(function (response)
 {
-    var map = JSON.parse(response);
-
+    var map = response.names;
+    var ids = response.chatty_ids;
 
     // map all the links alread in the document
-    mapNames(map, document);
+    mapNames(map, ids, document);
 
     document.addEventListener('DOMNodeInserted', function(e)
     {
         // try to map all the links that just got added
-        mapNames(map, e.srcElement);
+        mapNames(map, ids, e.srcElement);
     });
 
 });
