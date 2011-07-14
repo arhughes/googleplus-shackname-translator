@@ -13,6 +13,7 @@
     }],
     "permissions": [
         "http://adam.hughes.cc/*",
+        "http://gamewith.us/*",
         "https://plus.google.com/*"
     ]
 }

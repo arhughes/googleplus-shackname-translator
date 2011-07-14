@@ -4,7 +4,7 @@
 // @include https://plus.google.com/*
 // ==/UserScript==
 
-var NAMES_URL = "http://adam.hughes.cc/shacknames.json";
+var NAMES_URL = "http://gamewith.us/_widgets/shack-google+.php";
 var CACHE_TIME = 60 * 60 * 1000;
 
 var oid_regex = /^https?:\/\/(plus|profiles)\.google\.com\/(u\/\d\/)?(\d+)$/i
@@ -56,7 +56,7 @@ if ((now - GM_getValue('last_updated', 0)) > CACHE_TIME)
     GM_log("fetching");
     GM_xmlhttpRequest({
         method: "GET",
-        url: "http://adam.hughes.cc/shacknames.json", 
+        url: NAMES_URL, 
         onload: function(response) {
             var map = JSON.parse(response.responseText);
 
