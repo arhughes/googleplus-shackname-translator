@@ -1,6 +1,6 @@
 {
     "name": "Google+ Shackname Translator",
-    "version": "0.3",
+    "version": "0.4",
     "description": "Puts Shacknews names into your Google+ stream",
     "background_page": "background.html",
     "update_url": "http://adam.hughes.cc/shack/googleplus/autoupdate.xml",
