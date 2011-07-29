@@ -33,9 +33,13 @@ function mapNames(map, ids, source)
         {
             var oid = match[3];
 
+            if (links[i].className.indexOf("shack") > 0)
+                continue;
+
             if (ids.indexOf("\"" + oid + "\"") >= 0)
             {
                 links[i].innerHTML += "<img style='vertical-align: bottom' src='" + shack_icon + "'/>";
+                links[i].className += " shack";
             }
 
             // match the oid number with our mapping
